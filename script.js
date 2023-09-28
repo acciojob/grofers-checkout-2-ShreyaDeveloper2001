@@ -1,17 +1,24 @@
 //your code here
-// Get all elements with data-ns-test="prices" attribute
-const priceElements = document.querySelectorAll('[data-ns-test="prices"]');
+// Function to calculate the total price and update the total cell
+        function calculateTotal() {
+            const prices = document.querySelectorAll('[data-ns-test="prices"]');
+            let total = 0;
 
-// Initialize total price to zero
-let totalPrice = 0;
+            prices.forEach(priceElement => {
+                const price = parseFloat(priceElement.innerText);
+                if (!isNaN(price)) {
+                    total += price;
+                }
+            });
+			const grandTotalElement = document.querySelector('[data-ns-test="grandTotal"]');
+            grandTotalElement.innerText = total.toFixed(2); // Display total with two decimal places
+        }
 
-// Loop through the price elements and sum their values
-priceElements.forEach((priceElement) => {
-  totalPrice += parseFloat(priceElement.textContent);
-});
+        // Calculate the initial total when the page loads
+        calculateTotal();
 
-// Get the grand total cell
-const grandTotalCell = document.querySelector('[data-ns-test="grandTotal"]');
-
-// Update the grand total cell with the calculated total
-grandTotalCell.textContent = totalPrice.toFixed(2); // Assuming you want to display the total with two decimal places
+        // Add an event listener to recalculate the total if prices change
+        const prices = document.querySelectorAll('[data-ns-test="prices"]');
+        prices.forEach(priceElement => {
+            priceElement.addEventListener('input', calculateTotal);
+        });
